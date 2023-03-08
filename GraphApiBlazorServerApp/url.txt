@@ -1,1 +1,2 @@
 https://devblogs.microsoft.com/microsoft365dev/30daysmsgraph-day-17-use-case-assign-license/
+https://github.com/microsoftgraph/dotnetcore-console-sample/blob/main/day17-assign-license/Program.cs
