@@ -1,0 +1,104 @@
+﻿@page "/addUser"
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Add Users</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    @if (model == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <RadzenTemplateForm Data="@model" InvalidSubmit=@OnInvalidSubmit Submit="@((AddUserModel args) => { SubmitAsync(args); })">
+
+             <div class="row">
+                 <div class="col-md-8 offset-md-2">
+                   <RadzenFieldset Text="Event Data">
+                       <div class="row">
+                            <div class="col-md-4 align-items-center d-flex">
+                                <RadzenLabel Text="FirstName" />
+                            </div>
+                            <div class="col-md-8">
+                                <RadzenTextBox @bind-Value="model.FirstName"
+                                               style="width: 100%;"
+                                               Name="CardHolder"
+                                                Placeholder="FirstName"
+                                               />
+                            </div>
+                      </div>
+
+
+                        <div class="row">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Remarks" />
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox @bind-Value="model.LastName"
+                                           style="width: 100%;"
+                                           Name="Venue"
+                                           Placeholder="Last Name" />
+                            @*<DemoValidator Component="Remark" Text="Only Demo vlaue" Popup=@popup></DemoValidator>*@
+                        </div>
+                     </div>
+
+
+                        <div class="row">
+                            <div class="col-md-4 align-items-center d-flex">
+                                <RadzenLabel Text="Remarks" />
+                            </div>
+                            <div class="col-md-8">
+                                <RadzenTextBox @bind-Value="model.Email"
+                                           style="width: 100%;"
+                                           Name="Venue"
+                                           Placeholder="Email" />
+                                @*<DemoValidator Component="Remark" Text="Only Demo vlaue" Popup=@popup></DemoValidator>*@
+                            </div>
+                        </div>
+                    </RadzenFieldset>
+                </div>
+              </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                    <RadzenButton ButtonType="Radzen.ButtonType.Submit" Icon="save" Text="Save" />
+                    <RadzenButton ButtonStyle="Radzen.ButtonStyle.Light" Icon="cancel" style="display: inline-block; margin-left: 10px;" Text="Cancel" Click="@Cancel" />
+                </div>
+            </div>
+        </RadzenTemplateForm>
+    }
+
+</section>
+<!-- /.content -->
+
+
+<style>
+    form .row {
+        margin-bottom: 16px;
+        margin-right:0px;
+    }
+
+    .validation-message {
+        color: red
+    }
+
+    .rz-message-popup{
+        position:inherit;
+        margin-bottom: 4px;
+    }
+</style>
+
+
+
+
+
+

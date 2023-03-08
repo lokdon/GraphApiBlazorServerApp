@@ -1,0 +1,86 @@
+﻿@page "/users"
+
+<PageTitle>Users</PageTitle>
+<section class="section">
+    <div class="row">
+        <div class="col-lg">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="card-title" style="margin-left:16px;">Search</h5>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" placeholder="Title" id="inputText">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="Url" id="inputText">
+                        </div>
+                        <div class="col-sm-1">
+                            <RadzenButton ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Icon="save" Text="Search" Click="@OpenAddUserDialogBoxAsync" />
+                        </div>
+                        <br />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3" style="margin-top:12px;">
+                        <div class="col-md-3">
+                            <label style="margin-top:11px;"><b>@CategoryName</b></label>
+                        </div>
+                        <div class="col-md-3">
+                           @* <RadzenDropDown @bind-Value="pageDropDownValue" Data="@(new List<int>() { 3, 5, 8 })" Style="margin-bottom: 20px" Change="@ChangePageSize" />*@
+                        </div>
+                    </div>
+
+                    <RadzenDataGrid  @ref="grid" 
+                        IsLoading=@isLoading 
+                        Data="@userList"
+                        LoadData="@LoadDataAsync"
+                        AllowSorting="true" 
+                        AllowFiltering="true" 
+                        AllowPaging="true" 
+                        Count="@count"
+                        PageSize="4" 
+                        PagerHorizontalAlign="HorizontalAlign.Center"
+                        TItem="UserBasicData"
+                        ColumnWidth="200px">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.Id"
+                                                  Title="ID"
+                                                  Width="200px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.DisplayName"
+                                                  Title="DisplayName"
+                                                  Width="200px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.Email"
+                                                  Title="Email"
+                                                  Width="200px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.UserPrincipalName"
+                                                  Title="UserPrincipalName"
+                                                  Width="200px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Context="user"
+                                                  Filterable="false"
+                                                  Sortable="false"
+                                                  TextAlign="TextAlign.Center"
+                                                  Width="25px">
+
+                            </RadzenDataGridColumn>
+
+                        </Columns>
+                    </RadzenDataGrid>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
