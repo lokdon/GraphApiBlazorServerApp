@@ -19,11 +19,13 @@
     }
     else
     {
-        <RadzenTemplateForm Data="@model" InvalidSubmit=@OnInvalidSubmit Submit="@((AddUserModel args) => { SubmitAsync(args); })">
-
+        <RadzenTemplateForm Data="@model" 
+            InvalidSubmit=@OnInvalidSubmit 
+            Submit="@(async (AddUserModel args) => { await SubmitAsync(args); })">
+            <ServerInputValidator @ref="serverValidator"></ServerInputValidator>
              <div class="row">
                  <div class="col-md-8 offset-md-2">
-                   <RadzenFieldset Text="Event Data">
+                   <RadzenFieldset Text="User Details">
                        <div class="row">
                             <div class="col-md-4 align-items-center d-flex">
                                 <RadzenLabel Text="FirstName" />
@@ -34,19 +36,22 @@
                                                Name="CardHolder"
                                                 Placeholder="FirstName"
                                                />
+
+                                <ValidationMessage For="@(()=>model.FirstName)"></ValidationMessage>
                             </div>
                       </div>
 
 
                         <div class="row">
                         <div class="col-md-4 align-items-center d-flex">
-                            <RadzenLabel Text="Remarks" />
+                            <RadzenLabel Text="Last Name" />
                         </div>
                         <div class="col-md-8">
                             <RadzenTextBox @bind-Value="model.LastName"
                                            style="width: 100%;"
                                            Name="Venue"
                                            Placeholder="Last Name" />
+                                <ValidationMessage For="@(()=>model.LastName)"></ValidationMessage>
                             @*<DemoValidator Component="Remark" Text="Only Demo vlaue" Popup=@popup></DemoValidator>*@
                         </div>
                      </div>
@@ -54,13 +59,22 @@
 
                         <div class="row">
                             <div class="col-md-4 align-items-center d-flex">
-                                <RadzenLabel Text="Remarks" />
+                                <RadzenLabel Text="Email" />
                             </div>
-                            <div class="col-md-8">
-                                <RadzenTextBox @bind-Value="model.Email"
+                            <div class="col-md-3">
+                                <RadzenTextBox @bind-Value="model.UserName"
                                            style="width: 100%;"
                                            Name="Venue"
-                                           Placeholder="Email" />
+                                           Placeholder="User Name" />
+                                <ValidationMessage For="@(()=>model.UserName)"></ValidationMessage>
+                                @*<DemoValidator Component="Remark" Text="Only Demo vlaue" Popup=@popup></DemoValidator>*@
+                            </div>
+                            
+                            <div class="col-md-5">
+                                <RadzenTextBox @bind-Value="@domain"
+                                               style="width: 100%;"
+                                           Name="Venue"
+                                           Placeholder="domain" Disabled=true/>
                                 @*<DemoValidator Component="Remark" Text="Only Demo vlaue" Popup=@popup></DemoValidator>*@
                             </div>
                         </div>
@@ -69,9 +83,22 @@
               </div>
 
             <div class="row justify-content-center">
+
+                @if (isLoading)
+                {
+                    <!-- Border spinner -->
+                    <div class="spinner-border text-success spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                    <!-- End Border spinner -->
+                }
+                
+                
+                
                 <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                    <RadzenButton ButtonType="Radzen.ButtonType.Submit" Icon="save" Text="Save" />
-                    <RadzenButton ButtonStyle="Radzen.ButtonStyle.Light" Icon="cancel" style="display: inline-block; margin-left: 10px;" Text="Cancel" Click="@Cancel" />
+                    <RadzenButton ButtonType="Radzen.ButtonType.Submit" class="btn btn-primary" Disabled=isLoading Icon="save" Text="Save" />
+                    <RadzenButton ButtonStyle="Radzen.ButtonStyle.Light" class="btn btn-secondary" Disabled=isLoading Icon="cancel" Text="Cancel" Click="@Cancel" />
                 </div>
             </div>
         </RadzenTemplateForm>

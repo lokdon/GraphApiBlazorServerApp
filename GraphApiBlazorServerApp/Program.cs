@@ -1,3 +1,8 @@
+using FluentValidation;
+using GraphApiBlazorServerApp.GraphBrokers.EmailBrokers;
+using GraphApiBlazorServerApp.GraphBrokers.UserBrokers;
+using GraphApiBlazorServerApp.Models;
+using GraphApiBlazorServerApp.Validations;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -34,6 +39,12 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
+builder.Services.AddScoped<IUserGraphBroker, UserGraphBroker>();
+builder.Services.AddScoped<IEmailBroker, EmailBroker>();
+
+
+builder.Services.AddScoped<IValidator<AddUserModel>, AddUserValidation>();
 
 var app = builder.Build();
 
