@@ -13,6 +13,12 @@ namespace GraphApiBlazorServerApp.GraphBrokers.UserBrokers
 
         public Task<bool> CheckIfUserAlreadyExistsAsync(string email);
 
+        public Task<User> GetUserByIdAsync(string id);
+
+        public Task<User> GetUserByEmailAsync(string email);
+
+        public Task<List<UserBasicData>> GetAllUsersInTenatAsync();
+
 
 
     }

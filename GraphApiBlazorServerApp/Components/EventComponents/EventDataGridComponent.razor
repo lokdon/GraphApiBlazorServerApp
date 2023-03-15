@@ -1,0 +1,97 @@
+﻿<section class="section">
+    @if (calendarDropDownList==null || calendarDropDownList.Count ==0 )
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg">
+                <div class="card">
+                    <div class="card-body" style="margin-top:12px;">
+                        <div class="row">
+                            <h5 class="card-title" style="margin-left:16px;">Search</h5>
+                            <div class="col-sm-6">
+                                <RadzenLabel Text="Select Calendar" class="col-form-label" />
+                            </div>
+                            <div class="col-sm-6">
+                                <RadzenDropDown TValue="string"
+                                            Data=@calendarDropDownList
+                                            TextProperty="Name"
+                                            ValueProperty="Id"
+                                            Change="@OnChange" />
+                            </div>
+                            <div class="col-sm-1">
+                                @* <RadzenButton ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Icon="save" Text="Search" Click="@OpenAddLinkDialogBox" />*@
+                            </div>
+                            <div class="col-sm-2 offset-sm-1">
+                                @* <RadzenButton ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Danger" Icon="save" Text="Reset" Click="@OpenAddLinkDialogBox" />*@
+                            </div>
+                            <br />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <RadzenDataGrid AllowFiltering="false"
+                                        AllowColumnResize="true"
+                                        AllowAlternatingRows="true"
+                                        FilterMode="Radzen.FilterMode.Advanced"
+                                        AllowSorting="true"
+                                        PageSize="5"
+                                        AllowPaging="true"
+                                        PagerHorizontalAlign="HorizontalAlign.Left"
+                                        ShowPagingSummary="true"
+                                        Data="@eventList"
+                                        TItem="MyEventModel"
+                                        ColumnWidth="300px"
+                                        LogicalFilterOperator="LogicalFilterOperator.Or">
+                                <Columns>
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Property="MyEventModel.CalendarId"
+                                                      Title="ID"
+                                                      Width="200px" />
+
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Property="MyEventModel.Subject"
+                                                      Title="Title"
+                                                      Width="200px" />
+
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Property="MyEventModel.Content"
+                                                      Title="Content"
+                                                      Width="200px" />
+
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Property="MyEventModel.StartDateAndTime"
+                                                      Title="StartDateAndTime"
+                                                      Width="200px" />
+
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Property="MyEventModel.EndDateAndTime"
+                                                      Title="EndDateAndTime"
+                                                      Width="200px" />
+
+                                    <RadzenDataGridColumn TItem="MyEventModel"
+                                                      Context="user"
+                                                      Filterable="false"
+                                                      Sortable="false"
+                                                      TextAlign="TextAlign.Center"
+                                                      Width="25px">
+
+                                    </RadzenDataGridColumn>
+
+                                </Columns>
+                            </RadzenDataGrid>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+  
+</section>

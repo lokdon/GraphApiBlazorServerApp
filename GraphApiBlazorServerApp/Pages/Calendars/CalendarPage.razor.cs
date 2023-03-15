@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using GraphApiBlazorServerApp.Components.ValidationComponents;
+using GraphApiBlazorServerApp.GraphBrokers.CalendarBrokers;
 using GraphApiBlazorServerApp.GraphBrokers.EmailBrokers;
 using GraphApiBlazorServerApp.GraphBrokers.UserBrokers;
 using GraphApiBlazorServerApp.Models;
@@ -12,28 +13,28 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net;
-using GraphApiBlazorServerApp.Models;
 
-namespace GraphApiBlazorServerApp.Pages.Users
+
+namespace GraphApiBlazorServerApp.Pages.Calendars
 {
-    public partial class AddUserPage :ComponentBase
+    public partial class CalendarPage : ComponentBase
     {
-        AddUserModel model { get; set; }
+        MyCalendarModel model;
 
         [Inject]
         NotificationService NotificationService { get; set; }
 
         [Inject]
-        IConfiguration configuration { get; set; }
-
-        [Inject]
         IUserGraphBroker GraphBroker { get; set; }
 
         [Inject]
-        IEmailBroker EmailBroker { get; set; }
+        ICalendarBroker CalendarBroker { get; set; }
 
         [Inject]
-        IValidator<AddUserModel> validator { get; set; }
+        IValidator<MyCalendarModel> validator { get; set; }
+
+        //[Inject]
+        //IValidator<AddUserModel> validator { get; set; }
 
         string domain = null;
 
@@ -47,35 +48,31 @@ namespace GraphApiBlazorServerApp.Pages.Users
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            model = new AddUserModel();
-            domain ="@"+ configuration["AzureAd:Domain"]!.ToString();
+            model = new MyCalendarModel();
+         
             errorList = new List<MyErrorModel>();
             errorDictionary = new Dictionary<string, string>();
         }
-
         void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
         {
             var data = args;
         }
 
-        async Task SubmitAsync(AddUserModel arg)
+        async Task SubmitAsync(MyCalendarModel arg)
         {
-
             isLoading = true;
             await InvokeAsync(() => StateHasChanged());
-
-            arg.Email=arg.UserName + "@" + configuration["AzureAd:Domain"]!.ToString();
-            var validationResults =await validator.ValidateAsync(arg);
+            
+            var validationResults = await validator.ValidateAsync(arg);
 
             if (validationResults.IsValid)
             {
-                var user = await GraphBroker.AddUserModelAsync(arg);
-                var license = await GraphBroker.GetLicensesAsync();
-                await GraphBroker.AddLicenseToUserAsync(user.Id, license.SkuId);
-
-                await SendEmailToUserAsync(user.Mail);
-                model = new AddUserModel();
-                AddUserNotification();
+                var calendar = await CalendarBroker.CreateMeCalendarAsync(arg.CalendarName);
+                if (calendar != null)
+                {
+                    CalendarAddedNotification();
+                    model = new MyCalendarModel();
+                }
             }
             else
             {
@@ -101,15 +98,6 @@ namespace GraphApiBlazorServerApp.Pages.Users
 
             isLoading = false;
             await InvokeAsync(() => StateHasChanged());
-
-        }
-        async Task SendEmailToUserAsync(string toAddress)
-        {
-            string subject = "On board Congratulation";
-            string content = "Welcome to the fantastic jobs";
-            string fromAddress = "lokesh@5pwyw5.onmicrosoft.com";
-
-           await EmailBroker.SendEmailAsync(subject, content, toAddress, fromAddress);   
         }
 
         void Cancel()
@@ -117,14 +105,26 @@ namespace GraphApiBlazorServerApp.Pages.Users
             //
         }
 
-        void AddUserNotification()
+        void ShowUserAlreadyExists()
+        {
+            ShowNotification(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Duplicate",
+                Detail = "User already exists with email",
+                Duration = 4000,
+            });
+        }
+
+
+        void CalendarAddedNotification()
         {
 
             ShowNotification(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,
                 Summary = "Success",
-                Detail = "User added successfully",
+                Detail = "Calendar Created Successfully",
                 Duration = 4000,
             });
         }
@@ -133,5 +133,17 @@ namespace GraphApiBlazorServerApp.Pages.Users
         {
             NotificationService.Notify(message);
         }
+
+        void ShowExceptionNotification()
+        {
+            ShowNotification(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Failure",
+                Detail = "Some Exception Occurred",
+                Duration = 4000,
+            });
+        }
     }
 }
+

@@ -1,0 +1,100 @@
+﻿<section class="section">
+    <div class="row">
+        <div class="col-lg">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="card-title" style="margin-left:16px;">Add Invitees</h5>
+                        <div class="col-sm-3">
+                            <RadzenLabel Text="Calendar"></RadzenLabel> 
+                            <RadzenDropDown TValue="string"
+                                                Data=@calendarDropDownList
+                                                TextProperty="Name"
+                                                ValueProperty="Id"
+                                            Change="@OnCalendarDropDownChanged"></RadzenDropDown>
+                        </div>
+                        <div class="col-sm-3">
+                            <RadzenLabel Text="Events"></RadzenLabel>
+                            <RadzenDropDown TValue="string"
+                                            Data=@eventDropDownList
+                                            TextProperty="Name"
+                                            ValueProperty="Id"
+                                            Change="@OnEventDropDownChanged"></RadzenDropDown>
+                        </div>
+                        <div class="col-sm-3">
+                            <RadzenLabel Text="Users"></RadzenLabel>
+                            <RadzenDropDown TValue="string"
+                                            Data=@userDropDownData
+                                            TextProperty="Name"
+                                            ValueProperty="Id"
+                                            Change="@OnUserDropDownChanged"></RadzenDropDown>
+                        </div>
+                        <div class="col-sm-2">
+                            <RadzenLabel Text=""></RadzenLabel>
+                            <RadzenButton ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Icon="save" Text="Add" Click="@OnAddButtonClicked" />
+                        </div>
+                        <br />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3" style="margin-top:12px;">
+                        <div class="col-md-4">
+                            <RadzenButton ButtonType="Radzen.ButtonType.Button" class="btn btn-primary" Icon="save" Text="Send mail" Click="@SendMailToInviteesAsync" />
+                        </div>
+                    </div>
+
+                    <RadzenDataGrid @ref="grid"
+                                    AllowFiltering="false"
+                                    AllowPaging="false"
+                                    AllowSorting="false"
+                                    TItem="UserBasicData"
+                                    AllowColumnResize="true"
+                                    AllowAlternatingRows="true"
+                                    ColumnWidth="300px"
+                                    Data="@userList"
+                                    >
+
+                        <Columns>
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.Id"
+                                                  Title="ID"
+                                                  Width="50px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.DisplayName"
+                                                  Title="Invitee Name"
+                                                  Width="40px" />
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Property="UserBasicData.Email"
+                                                  Title="Invitee Name"
+                                                  Width="40px" />
+
+
+                            <RadzenDataGridColumn TItem="UserBasicData"
+                                                  Context="catModel"
+                                                  Filterable="false"
+                                                  Sortable="false"
+                                                  TextAlign="TextAlign.Center"
+                                                  Width="25px">
+                                <Template Context="userdata">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => RemoveUserFromList(userdata))">
+                                    </RadzenButton>
+                                </Template>
+                            </RadzenDataGridColumn>
+                        </Columns>
+                    </RadzenDataGrid>
+
+                    @* <CustomPaginationComponent
+                    @ref="customPaginationRef"
+                    OnPageClick="GetPaginatedLinkDataAsPerPageIndex" />*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

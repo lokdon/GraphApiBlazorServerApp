@@ -1,67 +1,68 @@
 ﻿@page "/queryAllUser"
 <PageTitle>Users</PageTitle>
-<section class="section">
-    <div class="row">
-        <div class="col-lg">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-3" style="margin-top:12px;">
-                        <div class="col-md-3">
-                            <label style="margin-top:11px;"><b>@CategoryName</b></label>
-                        </div>
-                        <div class="col-md-3">
-                            @* <RadzenDropDown @bind-Value="pageDropDownValue" Data="@(new List<int>() { 3, 5, 8 })" Style="margin-bottom: 20px" Change="@ChangePageSize" />*@
+
+@if (userList == null || userList.Count() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <section class="section">
+        <div class="row">
+            <div class="col-lg">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <h5 class="card-title" style="margin-left:16px;">All users</h5>
                         </div>
                     </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" style="margin-top:10px;">
+                            <RadzenDataGrid AllowFiltering="true"
+                                        AllowColumnResize="true"
+                                        AllowAlternatingRows="false"
+                                        FilterMode="Radzen.FilterMode.Advanced"
+                                        AllowSorting="true"
+                                        PageSize="10"
+                                        AllowPaging="true"
+                                        PagerHorizontalAlign="HorizontalAlign.Left"
+                                        ShowPagingSummary="true"
+                                        Data="@userList"
+                                        TItem="UserBasicData"
+                                        ColumnWidth="300px"
+                                        LogicalFilterOperator="LogicalFilterOperator.Or">
+                                <Columns>
+                                    <RadzenDataGridColumn TItem="UserBasicData"
+                                                      Property="UserBasicData.Id"
+                                                      Title="ID"
+                                                      Width="200px" Visible=false />
 
-                    <RadzenDataGrid AllowFiltering="true"
-                                    AllowColumnResize="true"
-                                    AllowAlternatingRows="false"
-                                    FilterMode="FilterMode.Advanced"
-                                    AllowSorting="true"
-                                    PageSize="5"
-                                    AllowPaging="true"
-                                    PagerHorizontalAlign="HorizontalAlign.Left"
-                                    ShowPagingSummary="true"
-                                    Data="@userList"
-                                    TItem="UserBasicData"
-                                    ColumnWidth="300px"
-                                    LogicalFilterOperator="LogicalFilterOperator.Or">
-                        <Columns>
-                            <RadzenDataGridColumn TItem="UserBasicData"
-                                                  Property="UserBasicData.Id"
-                                                  Title="ID"
-                                                  Width="200px" />
+                                    <RadzenDataGridColumn TItem="UserBasicData"
+                                                      Property="UserBasicData.DisplayName"
+                                                      Title="DisplayName"
+                                                      Width="200px" />
 
-                            <RadzenDataGridColumn TItem="UserBasicData"
-                                                  Property="UserBasicData.DisplayName"
-                                                  Title="DisplayName"
-                                                  Width="200px" />
+                                    <RadzenDataGridColumn TItem="UserBasicData"
+                                                      Property="UserBasicData.Email"
+                                                      Title="Email"
+                                                      Width="200px" />
 
-                            <RadzenDataGridColumn TItem="UserBasicData"
-                                                  Property="UserBasicData.Email"
-                                                  Title="Email"
-                                                  Width="200px" />
+                                    <RadzenDataGridColumn TItem="UserBasicData"
+                                                      Property="UserBasicData.UserPrincipalName"
+                                                      Title="UserPrincipalName"
+                                                      Width="200px" />
 
-                            <RadzenDataGridColumn TItem="UserBasicData"
-                                                  Property="UserBasicData.UserPrincipalName"
-                                                  Title="UserPrincipalName"
-                                                  Width="200px" />
 
-                            <RadzenDataGridColumn TItem="UserBasicData"
-                                                  Context="user"
-                                                  Filterable="false"
-                                                  Sortable="false"
-                                                  TextAlign="TextAlign.Center"
-                                                  Width="25px">
+                                </Columns>
+                            </RadzenDataGrid>
 
-                            </RadzenDataGridColumn>
+                        </div>
 
-                        </Columns>
-                    </RadzenDataGrid>
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+}

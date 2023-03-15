@@ -45,15 +45,68 @@ namespace GraphApiBlazorServerApp.GraphBrokers.EmailBrokers
 
             try
             {
-                await _graphServiceClient.Users["b6edd00b-a8e4-4c94-aa8c-428cdb0b690a"]
-                                        .SendMail(message, saveToSentItems)
-                                        .Request()
-                                        .PostAsync();
+                //await _graphServiceClient.Users["b6edd00b-a8e4-4c94-aa8c-428cdb0b690a"]
+                //                        .SendMail(message, saveToSentItems)
+                //                        .Request()
+                //                        .PostAsync();
 
-                //await _graphServiceClient.Me
-                //                   .SendMail(message, saveToSentItems)
-                //                   .Request() 
-                //                   .PostAsync();
+                await _graphServiceClient.Me
+                                   .SendMail(message, saveToSentItems)
+                                   .Request()
+                                   .PostAsync();
+            }
+            catch (Exception ex)
+            {
+                _consentHandler.HandleException(ex);
+            }
+        }
+
+        public async Task SendEmailAsync(string subject, string content, List<string> toAddress, string fromAddress)
+        {
+            
+            var recipents = new List<Recipient>();
+
+            if (toAddress.Count != 0)
+            {
+                foreach (var recipient in toAddress)
+                {
+                    var model = new Recipient
+                    {
+                        EmailAddress = new EmailAddress
+                        {
+                            Address = recipient
+                        }
+                    };
+
+                    recipents.Add(model);
+                }
+            }
+
+
+            Message message = new()
+            {
+                Subject = subject,
+                Body = new ItemBody
+                {
+                    ContentType = BodyType.Text,
+                    Content = content
+                },
+                ToRecipients = recipents
+            };
+
+            bool saveToSentItems = true;
+
+            try
+            {
+                //await _graphServiceClient.Users["b6edd00b-a8e4-4c94-aa8c-428cdb0b690a"]
+                //                        .SendMail(message, saveToSentItems)
+                //                        .Request()
+                //                        .PostAsync();
+
+                await _graphServiceClient.Me
+                                   .SendMail(message, saveToSentItems)
+                                   .Request()
+                                   .PostAsync();
             }
             catch (Exception ex)
             {

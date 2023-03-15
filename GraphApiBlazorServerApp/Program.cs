@@ -1,5 +1,8 @@
 using FluentValidation;
+using GraphApiBlazorServerApp.GraphBrokers.CalendarBrokers;
 using GraphApiBlazorServerApp.GraphBrokers.EmailBrokers;
+using GraphApiBlazorServerApp.GraphBrokers.EventBrokers;
+using GraphApiBlazorServerApp.GraphBrokers.OnlineMeetingBrokers;
 using GraphApiBlazorServerApp.GraphBrokers.UserBrokers;
 using GraphApiBlazorServerApp.Models;
 using GraphApiBlazorServerApp.Validations;
@@ -42,9 +45,16 @@ builder.Services.AddScoped<ContextMenuService>();
 
 builder.Services.AddScoped<IUserGraphBroker, UserGraphBroker>();
 builder.Services.AddScoped<IEmailBroker, EmailBroker>();
+builder.Services.AddScoped<ICalendarBroker, CalendarBroker>();
+builder.Services.AddScoped<IEventBroker, EventBroker>();
+builder.Services.AddScoped<IOnlineMeetingBroker, OnlineMeetingBroker>();
+
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddScoped<IValidator<AddUserModel>, AddUserValidation>();
+builder.Services.AddScoped<IValidator<MyCalendarModel>, AddCalendarValidations>();
+builder.Services.AddScoped<IValidator<MyEventModel>, MyEventValidations>();
 
 var app = builder.Build();
 

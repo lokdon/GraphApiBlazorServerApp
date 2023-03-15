@@ -1,0 +1,117 @@
+﻿<section class="section">
+    <div class="row">
+        <div class="col-lg">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <RadzenTemplateForm Data="@model"
+                                        InvalidSubmit=@OnInvalidSubmit
+                                        Submit="@((MyEventModel args) => { SubmitAsync(args); })">
+                        <ServerInputValidator @ref="serverValidator"></ServerInputValidator>
+
+                        <div class="row mb-3">
+                            <RadzenLabel Text="Calendar" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenDropDown TValue="string" 
+                                               Data=@calendarDropDownList 
+                                               TextProperty="Name"
+                                                ValueProperty="Id" 
+                                                Change="@OnChange" />
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="row mb-3">
+                            <RadzenLabel Text="Title" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenTextBox @bind-Value="model.Subject"
+                                               style="width: 100%;"
+                                               Name="Name"
+                                               class="form-control"
+                                               Placeholder="Title" />
+                                <ValidationMessage For="@(()=>model.Subject)"></ValidationMessage>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <RadzenLabel Text="Content" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenTextBox @bind-Value="model.Content"
+                                               style="width: 100%;"
+                                               Name="Name"
+                                               class="form-control"
+                                               Placeholder="Content" />
+                                <ValidationMessage For="@(()=>model.Content)"></ValidationMessage>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <RadzenLabel Text="Start Date Time" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenDatePicker @bind-Value="model.StartDateAndTime" ShowTime="true" style="width: 100%;" Placeholder="StartDateAndTime" />
+                                <ValidationMessage For="@(()=>model.StartDateAndTime)"></ValidationMessage>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <RadzenLabel Text="End Date Time" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenDatePicker @bind-Value="model.EndDateAndTime" ShowTime="true"
+                                                  style="width: 100%;"
+                                                  />
+                                <ValidationMessage For="@(()=>model.EndDateAndTime)"></ValidationMessage>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <RadzenLabel Text="Location" class="col-sm-2 col-form-label" Style="margin-left:50px;" />
+                            <div class="col-sm-7">
+                                <RadzenTextBox @bind-Value="model.Location"
+                                                  style="width: 100%;"
+                                                  Name="Name"
+                                                  class="form-control"
+                                               Placeholder="Location" />
+                                <ValidationMessage For="@(()=>model.Location)"></ValidationMessage>
+                            </div>
+                        </div>
+                       
+                        <div class="text-center">
+
+                            @if (isLoading)
+                            {
+                                    <!-- Border spinner -->
+                                    <div class="spinner-border text-success spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+
+                                    <!-- End Border spinner -->
+                            }
+                            <RadzenButton ButtonType="Radzen.ButtonType.Submit" class="btn btn-primary" Icon="save" Text="Save" />
+                            <RadzenButton ButtonStyle="Radzen.ButtonStyle.Light" class="btn btn-secondary" Icon="cancel" Text="Cancel" Click="@Cancel" />
+                        </div>
+                    </RadzenTemplateForm>
+                    <!-- Horizontal Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    form .row {
+        margin-bottom: 16px;
+        margin-right: 0px;
+    }
+
+    .validation-message {
+        color: red
+    }
+
+    .rz-message-popup {
+        position: inherit;
+        margin-bottom: 4px;
+    }
+</style>

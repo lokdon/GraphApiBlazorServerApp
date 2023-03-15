@@ -1,0 +1,94 @@
+﻿@page "/calendar"
+
+<PageTitle>Calendar</PageTitle>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Add Calendar</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    @if (model == null)
+    {
+            <p><em>Loading...</em></p>
+    }
+    else
+    {
+            <RadzenTemplateForm Data="@model" 
+            InvalidSubmit=@OnInvalidSubmit 
+            Submit="@(async (MyCalendarModel args) => { await SubmitAsync(args); })">
+                <ServerInputValidator @ref="serverValidator"></ServerInputValidator>
+                 <div class="row">
+                     <div class="col-lg">
+                        <div class="card">
+                                <div class="card-body">
+                                      <div class="col-md-8 offset-md-2">
+                                                <RadzenFieldset Text="Calendar Details">
+                                       <div class="row">
+                                            <div class="col-md-4 align-items-center d-flex">
+                                                <RadzenLabel Text="Calendar Name" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <RadzenTextBox @bind-Value="model.CalendarName"
+                                                           style="width: 100%;"
+                                                           Name="CardHolder"
+                                                       Placeholder="CalendarName" />
+                                            <ValidationMessage For="@(()=>model.CalendarName)"></ValidationMessage>
+                                            </div>
+                                      </div>
+                                    </RadzenFieldset>
+                                        </div>
+                                       <div class="text-center">
+
+                                            @if (isLoading)
+                                            {
+                                                <!-- Border spinner -->
+                                                <div class="spinner-border text-success spinner-border-sm" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+
+                                                <!-- End Border spinner -->
+                                            }
+                                            <RadzenButton ButtonType="Radzen.ButtonType.Submit" class="btn btn-primary" Icon="save" Text="Save" />
+                                            <RadzenButton ButtonStyle="Radzen.ButtonStyle.Light" class="btn btn-secondary" Icon="cancel" Text="Cancel" Click="@Cancel" />
+                                        </div>
+                              </div>
+                        </div>
+                    </div>
+                 </div>
+            </RadzenTemplateForm>
+    }
+
+</section>
+<!-- /.content -->
+
+
+<style>
+    form .row {
+        margin-bottom: 16px;
+        margin-right:0px;
+    }
+
+    .validation-message {
+        color: red
+    }
+
+    .rz-message-popup{
+        position:inherit;
+        margin-bottom: 4px;
+    }
+</style>
+
+
+
+
+
+
+
